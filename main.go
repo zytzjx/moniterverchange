@@ -19,12 +19,14 @@ import (
 
 func SendReport(v1, v2 string) {
 	m := gomail.NewMessage()
-
+	from := os.Getenv("frommail")
+	psw := os.Getenv("frompassword")
+	tomail := os.Getenv("tomail")
 	// Set E-Mail sender
-	m.SetHeader("From", "jefferyz#futuredial.com")
+	m.SetHeader("From", from)
 
 	// Set E-Mail receivers
-	m.SetHeader("To", "jefferyz#futuredial.com")
+	m.SetHeader("To", tomail)
 
 	// Set E-Mail subject
 	m.SetHeader("Subject", "iTunes updated")
@@ -33,7 +35,7 @@ func SendReport(v1, v2 string) {
 	m.SetBody("text/plain", fmt.Sprintf("iTunes version has updated from %s to %s\n", v1, v2))
 
 	// Settings for SMTP server
-	d := gomail.NewDialer("smtp.office365.com", 587, "jefferyz#futuredial.com", "passwordinput")
+	d := gomail.NewDialer("smtp.office365.com", 587, from, psw)
 
 	// This is only needed when SSL/TLS certificate is not valid on server.
 	// In production this should be set to false.
